@@ -9,7 +9,7 @@ interface ParticipantManagerProps {
   onAddParticipant: (name: string) => void;
   onRemoveParticipant: (id: string) => void;
   onClearAll: () => void;
-  onImportParticipants: (participants: Array<{ name: string; phone?: string; email?: string }>) => void;
+  onImportParticipants: (participants: Array<{ name: string;  email?: string }>) => void;
 }
 
 interface ImportResult {
@@ -97,7 +97,7 @@ const ParticipantManager: React.FC<ParticipantManagerProps> = ({
         .filter(data => data.name && data.name.trim().length > 0)
         .map(data => ({
           name: data.name.trim(),
-          phone: data.phone,
+          //phone: data.phone,
           email: data.email
         }));
       

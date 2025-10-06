@@ -214,7 +214,7 @@ const MultiDrawingArea: React.FC<MultiDrawingAreaProps> = ({
     return selectedParticipants.map((participant, index) => ({
       id: `${participant.id}-${Date.now()}-${index}`,
       name: participant.name,
-      phone: participant.phone, // TAMBAHKAN ini
+     // phone: participant.phone, // TAMBAHKAN ini
        email: participant.email,  // TAMBAHKAN ini
       wonAt: new Date(),
       prizeId: selectedPrize.id,
@@ -302,7 +302,7 @@ const MultiDrawingArea: React.FC<MultiDrawingAreaProps> = ({
       const participant = participants.find(p => p.name === winner.name);
       return {
         ...winner,
-        phone: participant?.phone || winner.phone,
+       // phone: participant?.phone || winner.phone,
         email: participant?.email || winner.email
       };
     });
@@ -339,7 +339,7 @@ const MultiDrawingArea: React.FC<MultiDrawingAreaProps> = ({
     const participant = participants.find(p => p.name === winner.name);
     return {
       ...winner,
-      phone: participant?.phone || winner.phone,
+      //phone: participant?.phone || winner.phone,
       email: participant?.email || winner.email
     };
   });
