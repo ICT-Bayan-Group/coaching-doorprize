@@ -219,7 +219,7 @@ const DisplayPage: React.FC = () => {
   // Show loading state
   if (settingsHook.loading) {
     return (
-      <div className="fixed inset-0 from-blue-400 to-blue-950 flex items-center justify-center">
+      <div className="fixed inset-0 bg-gradient-to-b from-blue-400 to-blue-950 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-white mx-auto mb-6"></div>
         </div>
@@ -268,6 +268,9 @@ const DisplayPage: React.FC = () => {
                 src={settings.eventLogo}
                 alt="Event Logo"
                 className="h-32 w-auto"
+                style={{
+                  filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.5))'
+                }}
               />
             )}
           </div>
