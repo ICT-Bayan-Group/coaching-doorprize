@@ -9,7 +9,7 @@ interface ParticipantManagerProps {
   onAddParticipant: (name: string) => void;
   onRemoveParticipant: (id: string) => void;
   onClearAll: () => void;
-  onImportParticipants: (participants: Array<{ name: string; phone?: string; email?: string }>) => void;
+  onImportParticipants: (participants: Array<{ name: string; email?: string }>) => void;
 }
 
 interface ImportResult {

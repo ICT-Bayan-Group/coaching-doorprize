@@ -2,7 +2,6 @@ export interface Participant {
   id: string;
   name: string;
   addedAt: Date;
-  phone?: string;  // Tambahkan ini
   email?: string;  // Tambahkan ini
 }
 
@@ -13,7 +12,6 @@ export interface Winner {
   prizeId?: string;
   prizeName?: string;
   drawSession?: string;
-  phone?: string;  // Tambahkan ini
   email?: string;  // Tambahkan ini
 }
 

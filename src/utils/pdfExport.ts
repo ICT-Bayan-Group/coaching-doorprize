@@ -8,7 +8,6 @@ interface Winner {
   prizeId?: string;
   prizeName?: string;
   drawSession?: string;
-  phone?: string;
   email?: string;
 }
 
@@ -173,7 +172,7 @@ const extractName = (fullName: string): string => {
 // CSV Export with Phone and Email
 export const exportWinnersCSV = (winners: Winner[]) => {
   try {
-    const headers = ['No', 'Name', 'BIB', 'Phone', 'Email', 'Prize', 'Date', 'Time'];
+    const headers = ['No', 'Name', 'BIB', 'Email', 'Prize', 'Date', 'Time'];
     const csvContent = [
       headers.join(','),
       ...winners.map((winner, index) => {
@@ -184,7 +183,6 @@ export const exportWinnersCSV = (winners: Winner[]) => {
           index + 1,
           `"${cleanName}"`,
           `"${bibNumber}"`,
-          `"${winner.phone || '-'}"`,
           `"${winner.email || '-'}"`,
           `"${winner.prizeName || '-'}"`,
           new Date(winner.wonAt).toLocaleDateString('id-ID'),
