@@ -10,6 +10,7 @@ interface Winner {
   prizeId?: string;
   prizeName?: string;
   drawSession?: string;
+  phone?: string;
   email?: string;
 }
 

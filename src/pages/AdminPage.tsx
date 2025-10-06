@@ -101,12 +101,13 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout }) => {
 
   // UPDATED: Add multiple participants with phone and email support
   const addMultipleParticipants = useCallback((
-    importedData: Array<{ name: string; email?: string }>
+    importedData: Array<{ name: string; phone?: string; email?: string }>
   ) => {
     console.log('Admin: Importing participants with data:', importedData.length);
     
     const promises = importedData.map(data => participantsHook.add({
       name: data.name,
+      phone: data.phone,    // Store phone (hidden in UI)
       email: data.email,    // Store email (hidden in UI)
       addedAt: new Date(),
     }));
@@ -217,6 +218,7 @@ const AdminPage: React.FC<AdminPageProps> = ({ onLogout }) => {
       uniqueNewWinners.forEach(winner => {
         winnersHook.add({
           ...winner,
+          phone: winner.phone,  // Include phone
           email: winner.email   // Include email
         });
       });

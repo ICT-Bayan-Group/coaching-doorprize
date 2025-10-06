@@ -4,6 +4,7 @@ import { Participant } from '../types';
 // Interface untuk data yang diimport dengan informasi tambahan
 interface ImportedParticipantData {
   name: string;
+  phone?: string;
   email?: string;
 }
 
@@ -61,6 +62,16 @@ export const importFromFile = (file: File): Promise<ImportedParticipantData[]> =
                     header.toLowerCase().includes('number')
                   );
                   
+                  // Find phone column (case insensitive)
+                  const phoneColumn = headers.find(header => 
+                    header.toLowerCase().includes('phone') || 
+                    header.toLowerCase().includes('telepon') ||
+                    header.toLowerCase().includes('hp') ||
+                    header.toLowerCase().includes('wa') ||
+                    header.toLowerCase().includes('whatsapp') ||
+                    header.toLowerCase().includes('no_hp') ||
+                    header.toLowerCase().includes('nohp')
+                  );
                   
                   // Find email column (case insensitive)
                   const emailColumn = headers.find(header => 
@@ -72,6 +83,7 @@ export const importFromFile = (file: File): Promise<ImportedParticipantData[]> =
                   data.forEach(row => {
                     let participantName = '';
                     let bibNumber = '';
+                    let phone = '';
                     let email = '';
                     
                     // Get name
@@ -95,6 +107,14 @@ export const importFromFile = (file: File): Promise<ImportedParticipantData[]> =
                       }
                     }
                     
+                    // Get phone
+                    if (phoneColumn) {
+                      const phoneValue = String(row[phoneColumn] || '').trim();
+                      if (phoneValue.length > 0) {
+                        phone = phoneValue;
+                      }
+                    }
+                    
                     // Get email
                     if (emailColumn) {
                       const emailValue = String(row[emailColumn] || '').trim();
@@ -113,6 +133,7 @@ export const importFromFile = (file: File): Promise<ImportedParticipantData[]> =
 
                       participants.push({
                         name: displayName,
+                        phone: phone || undefined,
                         email: email || undefined // tetap simpan full email
                       });
                     }
@@ -224,26 +245,28 @@ const extractName = (fullName: string): string => {
 // Export to CSV with phone and email support
 export const exportToCsv = (participants: Participant[], winners: any[]) => {
   const csvContent = [
-    ['Winner Name', 'BIB', 'Email', 'Prize Name', 'Draw Time'],
+    ['Winner Name', 'BIB', 'Phone', 'Email', 'Prize Name', 'Draw Time'],
     ...winners.map(w => {
       const cleanName = extractName(w.name);
       const bibNumber = extractBIB(w.name);
       return [
         cleanName,
         bibNumber,
+        w.phone || '-',
         w.email || '-',
         w.prizeName || 'No Prize',
         new Date(w.wonAt).toLocaleString('id-ID')
       ];
     }),
     [''],
-    ['Remaining Participants', 'BIB', 'Email', '', 'Added At'],
+    ['Remaining Participants', 'BIB', 'Phone', 'Email', '', 'Added At'],
     ...participants.map(p => {
       const cleanName = extractName(p.name);
       const bibNumber = extractBIB(p.name);
       return [
         cleanName,
         bibNumber,
+        (p as any).phone || '-',
         (p as any).email || '-',
         '',
         new Date(p.addedAt).toLocaleString('id-ID')
