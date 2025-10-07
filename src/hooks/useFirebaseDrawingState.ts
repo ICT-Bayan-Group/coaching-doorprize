@@ -11,8 +11,8 @@ interface DrawingState {
   isDrawing: boolean;
   currentWinners: Winner[];
   showConfetti: boolean;
-  selectedPrizeName?: string;
-  selectedPrizeImage?: string;
+ selectedPrizeName?: string | null;
+  selectedPrizeImage?: string | null;
   selectedPrizeId?: string | null;
   selectedPrizeQuota: number;
   participants: Participant[];
