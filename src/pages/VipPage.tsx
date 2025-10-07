@@ -375,7 +375,7 @@ const VipPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-900 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-blue-950 relative overflow-hidden">
       {/* Enhanced: VIP Control Status Indicator */}
       {vipControlActive && (
         <div className="absolute top-4 right-4 z-20">
