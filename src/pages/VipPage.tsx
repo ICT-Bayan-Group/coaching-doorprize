@@ -103,7 +103,7 @@ const VipPage: React.FC = () => {
     if (drawingState.predeterminedWinners) {
       setPredeterminedWinners(drawingState.predeterminedWinners);
     }
-    if (drawingState.selectedPrizeId) {
+    if (drawingState.selectedPrizeId !== undefined) {
       setSelectedPrizeId(drawingState.selectedPrizeId);
     }
     
@@ -123,23 +123,10 @@ const VipPage: React.FC = () => {
     setVipControlActive(vipProcessed || drawingState.vipControlActive || false);
   }, [drawingState]);
 
-  // Auto-select first available prize
-  useEffect(() => {
-    if (!selectedPrizeId && prizes.length > 0) {
-      const availablePrize = prizes.find(prize => prize.remainingQuota > 0);
-      if (availablePrize) {
-        setSelectedPrizeId(availablePrize.id);
-        updateDrawingState({
-          selectedPrizeId: availablePrize.id
-        });
-      }
-    }
-  }, [prizes, selectedPrizeId]);
-
   // Enhanced: Draw validation
   const validateDraw = useCallback((): { isValid: boolean; message?: string } => {
     if (!selectedPrize) {
-      return { isValid: false, message: 'Silakan pilih hadiah sebelum memulai undian.' };
+      return { isValid: false, message: 'Silakan pilih hadiah dari Admin terlebih dahulu sebelum memulai undian.' };
     }
     if (selectedPrize.remainingQuota === 0) {
       return { isValid: false, message: 'Hadiah ini tidak memiliki kuota tersisa.' };
@@ -339,20 +326,28 @@ const VipPage: React.FC = () => {
     }
   }, [drawingPhase, validateDraw, generateWinners, selectedPrize, predeterminedWinners, updateDrawingState, participants, saveWinnersToDatabase, updatePrizeQuota, lastDrawSession, isProcessing]);
 
-  // Simplified: Button configuration - only start and stop (hide ready, stopping, default cases)
+  // Simplified: Button configuration - only start and stop
   const getButtonConfig = () => {
     if (isProcessing) {
       return {
+        text: 'MEMPROSES...',
+        colors: 'from-gray-500 to-gray-600',
+        disabled: true,
+        glowColor: 'from-gray-400/20 to-gray-500/20',
+        icon: <Shield className="w-16 h-16" />
       };
     }
     
     if (drawingPhase === 'generated') {
+      // Cek apakah hadiah sudah dipilih dari Admin
+      const isDisabled = !selectedPrize || !selectedPrizeId;
+      
       return {
-        text: 'MULAI UNDIAN',
-        colors: 'from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500',
-        disabled: false,
+        text: isDisabled ? 'MENUNGGU HADIAH DARI ADMIN' : 'MULAI UNDIAN',
+        colors: isDisabled ? 'from-gray-500 to-gray-600' : 'from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500',
+        disabled: isDisabled,
         glowColor: 'from-blue-400/20 to-indigo-500/20',
-        icon: <Zap className="w-16 h-16" />
+        icon: isDisabled ? <Shield className="w-16 h-16" /> : <Zap className="w-16 h-16" />
       };
     } else {
       // spinning
@@ -489,7 +484,11 @@ const VipPage: React.FC = () => {
               Mode Kontrol VIP Aktif 
             </p>
           )}
-          
+          {!selectedPrize && !isDrawing && (
+            <p className="text-yellow-300 text-xs mt-1 font-semibold">
+              ⚠️ Menunggu Admin memilih hadiah di Panel Admin
+            </p>
+          )}
         </motion.div>
       </div>
     </div>
